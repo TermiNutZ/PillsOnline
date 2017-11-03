@@ -1,9 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Medication(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=100, blank=False, null=False, unique=True)
+    title = models.CharField(max_length=150, blank=False, null=False, unique=True)
     pharm_action = models.TextField(null=True)
     pharm_kinetic = models.TextField(null=True)
     pharm_kinetic = models.TextField(null=True)
@@ -23,4 +24,22 @@ class Medication(models.Model):
     old_policy = models.TextField(null=True)
     distr_policy = models.TextField(null=True)
     expiration_date = models.TextField(null=True)
-    img_path = models.CharField(max_length=100, null=True)
+    img_path = models.CharField(max_length=200, null=True)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    birthday = models.DateField()
+    weight = models.FloatField(null=True)
+
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, null=True)
+    pregnancy = models.NullBooleanField()
+    allergy = models.TextField(null=True)
+    liver_malfunction = models.NullBooleanField()
+    kidney_malfunction = models.NullBooleanField()
+    medications = models.ManyToManyField(Medication)
+
