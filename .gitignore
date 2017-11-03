@@ -101,3 +101,13 @@ ENV/
 .mypy_cache/
 
 pills_online/personal_settings.py
+
+# PyCharm files
+.idea
+
+# MacOS
+.DS_Store
+
+# static
+static/desc
+static/img
