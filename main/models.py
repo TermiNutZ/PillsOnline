@@ -1,3 +1,25 @@
 from django.db import models
 
-# Create your models here.
+
+class Medication(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100, blank=False, null=False, unique=True)
+    pharm_action = models.TextField(null=True)
+    pharm_kinetic = models.TextField(null=True)
+    pharm_kinetic = models.TextField(null=True)
+    indication = models.TextField(null=True)
+    contra = models.TextField(null=True)
+    dosage = models.TextField(null=True)
+    side_effect = models.TextField(null=True)
+    med_interact = models.TextField(null=True)
+    spec_instruct = models.TextField(null=True)
+    pregnancy = models.TextField(null=True)
+    kidney = models.TextField(null=True)
+    liver = models.TextField(null=True)
+    clinic_pharm_group = models.TextField(null=True)
+    form_composition = models.TextField(null=True)
+    overdosage = models.TextField(null=True)
+    child_policy = models.TextField(null=True)
+    old_policy = models.TextField(null=True)
+    distr_policy = models.TextField(null=True)
+    expiration_date = models.TextField(null=True)
