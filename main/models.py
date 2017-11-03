@@ -23,3 +23,4 @@ class Medication(models.Model):
     old_policy = models.TextField(null=True)
     distr_policy = models.TextField(null=True)
     expiration_date = models.TextField(null=True)
+    img_path = models.CharField(max_length=100, null=True)
