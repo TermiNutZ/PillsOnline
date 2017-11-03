@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Medication(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=150, blank=False, null=False, unique=True)
+    title = models.CharField(max_length=200, blank=False, null=False, unique=True)
     pharm_action = models.TextField(null=True)
     pharm_kinetic = models.TextField(null=True)
     pharm_kinetic = models.TextField(null=True)
