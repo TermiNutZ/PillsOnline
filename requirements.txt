@@ -1,4 +1,4 @@
-rtifi==2016.9.26
+certifi==2016.9.26
 Django==1.10.5
 django-filter==1.0.1
 django-friendship==1.5.0
@@ -8,7 +8,7 @@ drfdocs==0.0.11
 Markdown==2.6.7
 olefile==0.44
 Pillow==4.0.0
-psycopg2==2.6.2
+psycopg2==2.7.3
 PyJWT==1.4.2
 numpy==1.13.3
 scipy==1.0.0
