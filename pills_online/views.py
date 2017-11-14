@@ -21,6 +21,7 @@ class MedicationViewSet(viewsets.ModelViewSet):
     serializer_class = MedicationSerializer
 
     def get_queryset(self):
-        if self.request.query_params['q_type'] == 'my_drugs':
-            return Medication.objects.all().filter(id=self.request.user.id+3800)
+        if self.request.query_params['q_type'] == 'all_drugs':
+            return Medication.objects.all()
+            #return Medication.objects.all().filter(id=self.request.user.id+3800)
 

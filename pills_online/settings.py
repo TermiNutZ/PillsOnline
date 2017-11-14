@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 4000,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -132,3 +132,5 @@ REST_FRAMEWORK = {
 LOCAL_APPS = (
     'project.api',
 )
+
+ALLOWED_HOSTS = ['10.240.23.77', 'localhost', '127.0.0.1']
