@@ -25,7 +25,7 @@ class Medication(models.Model):
     distr_policy = models.TextField(null=True)
     expiration_date = models.TextField(null=True)
     img_path = models.CharField(max_length=200, null=True)
-
+    analogues = models.ManyToManyField('self')
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
