@@ -65,5 +65,5 @@ class Command(BaseCommand):
             for i in range(med_ind + 1, len(lms)):
                 if lms[med_ind].kl_divergence(lms[i], coll_lm) <= 1.5:
                     scores.append(medications[i])
-            medications[med_ind].analogues = scores
+            medications[med_ind].analogues.add(*scores)
             medications[med_ind].save()

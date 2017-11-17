@@ -32,6 +32,8 @@ class Medication(models.Model):
     warn_pregnancy = models.IntegerField(null=True)
     warn_kidney = models.IntegerField(null=True)
     warn_liver = models.IntegerField(null=True)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthday = models.DateField()
