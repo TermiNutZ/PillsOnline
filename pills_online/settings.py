@@ -133,4 +133,4 @@ LOCAL_APPS = (
     'project.api',
 )
 
-ALLOWED_HOSTS = ['10.240.23.77', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['10.240.23.77', 'localhost', '127.0.0.1', '10.240.18.22']
