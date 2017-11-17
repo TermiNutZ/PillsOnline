@@ -36,7 +36,7 @@ class Medication(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    birthday = models.DateField()
+    birthday = models.DateField(null=True)
     weight = models.FloatField(null=True)
 
     GENDER_CHOICES = (

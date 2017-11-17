@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from main.models import Medication
+from main.models import Medication, Profile
 from rest_framework import serializers
 
 
@@ -16,7 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         user.set_password(validated_data['password'])
+
+        profile = Profile.objects.create(
+            user=user
+        )
+
         user.save()
+        profile.save()
 
         return user
 
@@ -32,7 +38,8 @@ class MedicationSerializer(serializers.HyperlinkedModelSerializer):
         model = Medication
         fields = ('id', 'title', 'analogues')
 
+
 class WarningsAnaloguesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Medication
-        fields = ('id','warn_pregnancy','warn_kidney','warn_liver','analogues')
+        fields = ('id', 'warn_pregnancy', 'warn_kidney', 'warn_liver', 'analogues')

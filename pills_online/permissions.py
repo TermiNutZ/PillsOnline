@@ -17,6 +17,7 @@ class RegistrationPermission(permissions.BasePermission):
 
         return False
 
+
 class GetAuthPermission(permissions.BasePermission):
     """
     Permission:
