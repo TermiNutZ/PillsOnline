@@ -29,7 +29,9 @@ class Medication(models.Model):
     expiration_date = models.TextField(null=True)
     img_path = models.CharField(max_length=200, null=True)
     analogues = models.ManyToManyField('self')
-
+    warn_pregnancy = models.IntegerField(null=True)
+    warn_kidney = models.IntegerField(null=True)
+    warn_liver = models.IntegerField(null=True)
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthday = models.DateField()
