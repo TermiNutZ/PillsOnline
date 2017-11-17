@@ -4,7 +4,6 @@ from rest_framework import viewsets
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
 from pills_online.serializers import UserSerializer, GroupSerializer, MedicationSerializer, WarningsAnaloguesSerializer
-from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (RegistrationPermission,)
@@ -32,7 +31,6 @@ class MedicationViewSet(viewsets.ModelViewSet):
 class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
     permission_classes = (GetAuthPermission,)
     serializer_class = WarningsAnaloguesSerializer
-    queryset = Medication.objects.all()
     def get_queryset(self):
         query_set = Medication.objects.all().filter(id=self.request.query_params['id'])
         return query_set
