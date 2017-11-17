@@ -15,7 +15,7 @@ class RegistrationPermission(permissions.BasePermission):
         if request.method == 'POST':
             return True
 
-        return False
+        return True
 
 
 class GetAuthPermission(permissions.BasePermission):
@@ -23,10 +23,10 @@ class GetAuthPermission(permissions.BasePermission):
     Permission:
     For registration method for unauth users
     """
-    message = 'Access denied'
+    message = 'No auth permission'
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated and request.method == 'GET':
+        if request.user.is_authenticated:
             return True
 
         return False

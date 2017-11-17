@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User, Group
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.permissions import IsAuthenticated
+
 from main.models import Medication, Profile
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
 from pills_online.serializers import UserSerializer, GroupSerializer, MedicationSerializer, WarningsAnaloguesSerializer
@@ -30,9 +33,21 @@ class MedicationViewSet(viewsets.ModelViewSet):
         if self.request.query_params['q_type'] == 'all_drugs':
             return Medication.objects.all()
         if self.request.query_params['q_type'] == 'my_drugs':
-            user = User.objects.filter(id=self.request.user.id).first()
+            user = User.objects.get(id=self.request.user.id)
             profile = user.profile
             return profile.medications.all()
+
+    @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def add_to_user(self, request, pk=None):
+        medication = Medication.objects.get(id=pk)
+        user = User.objects.get(id=self.request.user.id)
+        profile = user.profile
+        profile.medications.add(medication)
+
+        return Response(
+            {"message": "Medication is added"},
+            status=status.HTTP_200_OK
+        )
 
 
 class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
