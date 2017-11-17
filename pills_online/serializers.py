@@ -28,7 +28,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ('url', 'name')
-class MedicationSerializer(serializers.ModelSerializer):
+
+
+class MedicationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Medication
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'analogues')
