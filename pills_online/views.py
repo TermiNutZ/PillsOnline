@@ -50,6 +50,18 @@ class MedicationViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK
         )
 
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def delete_from_user(self, request, pk=None):
+        user = User.objects.get(id=self.request.user.id)
+        profile = user.profile
+        medication = profile.medications.get(id=pk)
+        medication.delete()
+
+        return Response(
+            {"message": "Medication is deleted"},
+            status=status.HTTP_200_OK
+        )
+
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def analogues(self, request, pk=None):
         analogues = Medication.objects.get(id=pk).analogues
