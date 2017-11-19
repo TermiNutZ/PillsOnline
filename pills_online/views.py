@@ -1,14 +1,13 @@
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from main.models import Medication, Profile
 from rest_framework import viewsets, status
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
-from pills_online.serializers import UserSerializer, GroupSerializer, MedicationSerializer, \
-    WarningsAnaloguesSerializer
-from rest_framework.response import Response
+from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -71,7 +70,6 @@ class MedicationViewSet(viewsets.ModelViewSet):
 class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
     permission_classes = (GetAuthPermission,)
     serializer_class = WarningsAnaloguesSerializer
-    queryset = Medication.objects.all()
 
     def get_queryset(self):
         query_set = Medication.objects.all().filter(id=self.request.query_params['id'])

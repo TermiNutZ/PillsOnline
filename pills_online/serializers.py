@@ -67,3 +67,8 @@ class WarningsAnaloguesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Medication
         fields = ('id', 'warn_pregnancy', 'warn_kidney', 'warn_liver', 'analogues')
+
+class UsersMedicationProfileSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('id', '')

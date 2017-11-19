@@ -18,15 +18,17 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from pills_online import views
 from rest_framework.authtoken import views as rest_framework_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'medication', views.MedicationViewSet)
-router.register(r'warn_analog', views.WarningsAnaloguesViewSet)
+router.register(r'medication', views.MedicationViewSet, base_name="medication")
+router.register(r'warn_analog', views.WarningsAnaloguesViewSet, base_name="warn_analog")
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token')
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
