@@ -67,7 +67,7 @@ class MedicationViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
+class WarningsViewSet(viewsets.ModelViewSet):
     permission_classes = (GetAuthPermission,)
     serializer_class = WarningsAnaloguesSerializer
 
