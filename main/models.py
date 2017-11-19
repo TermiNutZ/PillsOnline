@@ -5,11 +5,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+
 class Medication(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200, blank=False, null=False, unique=True)
     pharm_action = models.TextField(null=True)
-    pharm_kinetic = models.TextField(null=True)
     pharm_kinetic = models.TextField(null=True)
     indication = models.TextField(null=True)
     contra = models.TextField(null=True)
@@ -49,6 +49,7 @@ class Profile(models.Model):
     liver_malfunction = models.NullBooleanField()
     kidney_malfunction = models.NullBooleanField()
     medications = models.ManyToManyField(Medication)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

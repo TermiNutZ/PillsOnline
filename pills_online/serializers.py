@@ -36,7 +36,31 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class MedicationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Medication
-        fields = ('id', 'title', 'analogues')
+        fields = ('id',
+                  'title',
+                  'pharm_action',
+                  'pharm_kinetic',
+                  'indication',
+                  'contra',
+                  'dosage',
+                  'side_effect',
+                  'med_interact',
+                  'spec_instruct',
+                  'pregnancy',
+                  'kidney',
+                  'liver',
+                  'clinic_pharm_group',
+                  'form_composition',
+                  'overdosage',
+                  'child_policy',
+                  'old_policy',
+                  'distr_policy',
+                  'expiration_date',
+                  'img_path',
+                  'warn_pregnancy',
+                  'warn_kidney',
+                  'warn_liver'
+                  )
 
 
 class WarningsAnaloguesSerializer(serializers.HyperlinkedModelSerializer):

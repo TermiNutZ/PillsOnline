@@ -6,7 +6,8 @@ from main.models import Medication, Profile
 from rest_framework import viewsets, status
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
-from pills_online.serializers import UserSerializer, GroupSerializer, MedicationSerializer, WarningsAnaloguesSerializer
+from pills_online.serializers import UserSerializer, GroupSerializer, MedicationSerializer, \
+    WarningsAnaloguesSerializer
 from rest_framework.response import Response
 
 
@@ -30,14 +31,15 @@ class MedicationViewSet(viewsets.ModelViewSet):
     serializer_class = MedicationSerializer
 
     def get_queryset(self):
-        if self.request.query_params['q_type'] == 'all_drugs':
-            return Medication.objects.all()
-        if self.request.query_params['q_type'] == 'my_drugs':
-            user = User.objects.get(id=self.request.user.id)
-            profile = user.profile
-            return profile.medications.all()
+        return Medication.objects.all()
+        # if self.request.query_params['q_type'] == 'all_drugs':
+        #     return Medication.objects.all()
+        # if self.request.query_params['q_type'] == 'my_drugs':
+        #     user = User.objects.get(id=self.request.user.id)
+        #     profile = user.profile
+        #     return profile.medications.all()
 
-    @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def add_to_user(self, request, pk=None):
         medication = Medication.objects.get(id=pk)
         user = User.objects.get(id=self.request.user.id)
@@ -48,6 +50,22 @@ class MedicationViewSet(viewsets.ModelViewSet):
             {"message": "Medication is added"},
             status=status.HTTP_200_OK
         )
+
+    @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def analogues(self, request, pk=None):
+        analogues = Medication.objects.get(id=pk).analogues
+        serializer = self.get_serializer(analogues, many=True)
+
+        return Response(serializer.data)
+
+    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def my(self, request):
+        user = User.objects.get(id=request.user.id)
+        profile = user.profile
+        medications = profile.medications.all()
+        serializer = self.get_serializer(medications, many=True)
+
+        return Response(serializer.data)
 
 
 class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
