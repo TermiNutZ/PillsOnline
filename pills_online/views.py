@@ -40,3 +40,4 @@ class WarningsAnaloguesViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         query_set = Medication.objects.all().filter(id=self.request.query_params['id'])
         return query_set
+
