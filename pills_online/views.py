@@ -55,7 +55,7 @@ class MedicationViewSet(viewsets.ModelViewSet):
         user = User.objects.get(id=self.request.user.id)
         profile = user.profile
         medication = profile.medications.get(id=pk)
-        medication.delete()
+        profile.medications.remove(medication)
 
         return Response(
             {"message": "Medication is deleted"},
