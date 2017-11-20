@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+from main.util import query_document_similarity
+
 
 class Medication(models.Model):
     id = models.AutoField(primary_key=True)
@@ -32,6 +34,13 @@ class Medication(models.Model):
     warn_pregnancy = models.IntegerField(null=True)
     warn_kidney = models.IntegerField(null=True)
     warn_liver = models.IntegerField(null=True)
+
+    def check_contradiction(self, profile_disease):
+        if profile_disease == "" or self.contra == "" \
+                or profile_disease is None or self.contra is None:
+            return False
+
+        return query_document_similarity(profile_disease, self.contra)
 
 
 class Profile(models.Model):

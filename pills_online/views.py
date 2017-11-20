@@ -78,6 +78,14 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+    @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def is_contra(self, request, pk=None):
+        medication = Medication.objects.get(id=pk)
+        user = User.objects.get(id=request.user.id)
+        profile = user.profile
+        print(profile.id)
+        return Response(medication.check_contradiction(profile.allergy))
+
 
 class WarningsViewSet(viewsets.ModelViewSet):
     permission_classes = (GetAuthPermission,)

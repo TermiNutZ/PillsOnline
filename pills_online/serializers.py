@@ -56,10 +56,7 @@ class MedicationSerializer(serializers.HyperlinkedModelSerializer):
                   'old_policy',
                   'distr_policy',
                   'expiration_date',
-                  'img_path',
-                  'warn_pregnancy',
-                  'warn_kidney',
-                  'warn_liver'
+                  'img_path'
                   )
 
 
@@ -67,6 +64,7 @@ class WarningsAnaloguesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Medication
         fields = ('id', 'warn_pregnancy', 'warn_kidney', 'warn_liver')
+
 
 class UsersMedicationProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
