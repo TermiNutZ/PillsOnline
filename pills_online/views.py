@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.models import User, Group
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
@@ -5,9 +7,11 @@ from rest_framework.response import Response
 
 from main.models import Medication, Profile
 from rest_framework import viewsets, status
+from gensim.models import Word2Vec
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
 from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer
+from pills_online.settings import PROJECT_ROOT
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -77,6 +81,16 @@ class MedicationViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(medications, many=True)
 
         return Response(serializer.data)
+
+    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def w2v(self, request):
+        file_ = os.path.join(PROJECT_ROOT, '../static/word2vec/w2vmodel.w2v')
+        w2v_model = Word2Vec.load(file_)
+        words = w2v_model.most_similar("кашел")
+
+
+        return Response(words[0])
+
 
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def is_contra(self, request, pk=None):
