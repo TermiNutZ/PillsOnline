@@ -7,7 +7,7 @@ from main.models import Medication, Profile
 from rest_framework import viewsets, status
 
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
-from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer
+from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer, UserProfileSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -92,5 +92,26 @@ class WarningsViewSet(viewsets.ModelViewSet):
     serializer_class = WarningsAnaloguesSerializer
 
     def get_queryset(self):
-        query_set = Medication.objects.all().filter(id=self.request.query_params['id'])
-        return query_set
+        queryset = Medication.objects.all().filter(id=self.request.query_params['id'])
+        return queryset
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = UserProfileSerializer
+    @list_route(methods=['get'], permission_classes=[GetAuthPermission])
+    def get(self, request):
+        user = User.objects.get(id=request.user.id)
+        profile = user.profile
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
+    @list_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def post(self, request):
+        user = User.objects.get(id=request.user.id)
+        profile = user.profile
+        profile.allergy = request.data['allergy']
+        profile.gender = request.data['gender']
+        profile.weight = request.data['weight']
+        profile.birthday = request.data['birthday']
+        profile.save()
+        return Response({"message": "Profile is edited"},
+            status=status.HTTP_200_OK)
