@@ -71,3 +71,10 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
         model = Profile
         fields = ('id', 'birthday','weight','gender','allergy')
         read_only_fields = ('id',)
+
+class MedicationIdSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Medication
+        fields = ('id',
+                  'title',
+                  )

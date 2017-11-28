@@ -5,9 +5,9 @@ from rest_framework.response import Response
 
 from main.models import Medication, Profile
 from rest_framework import viewsets, status
-
+from django.contrib.postgres.search import SearchVector, SearchRank, SearchQuery
 from pills_online.permissions import RegistrationPermission, GetAuthPermission
-from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer, UserProfileSerializer
+from pills_online.serializers import UserSerializer, GroupSerializer, WarningsAnaloguesSerializer, MedicationSerializer, UserProfileSerializer, MedicationIdSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -115,3 +115,14 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.save()
         return Response({"message": "Profile is edited"},
             status=status.HTTP_200_OK)
+
+class SearchEngine(viewsets.ModelViewSet):
+    permission_classes = (GetAuthPermission,)
+    serializer_class = MedicationIdSerializer
+    def get_queryset(self):
+        query = self.request.query_params['query']
+        body_vector = SearchVector('title','indication', 'pharm_action',config='russian')
+        term_query = SearchQuery(query,config='russian') #& SearchQuery('орви')
+        #res = Medication.objects.annotate(search=SearchVector('indication', 'contra')).filter(search='не')
+        queryset = Medication.objects.annotate(rank=SearchRank(body_vector, term_query)).order_by('-rank')
+        return queryset[:10]
