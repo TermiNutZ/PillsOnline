@@ -66,7 +66,15 @@ class WarningsAnaloguesSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'warn_pregnancy', 'warn_kidney', 'warn_liver')
 
 
-class UsersMedicationProfileSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id', '')
+        fields = ('id', 'birthday','weight','gender','allergy')
+        read_only_fields = ('id',)
+
+class MedicationIdSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Medication
+        fields = ('id',
+                  'title',
+                  )

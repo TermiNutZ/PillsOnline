@@ -26,6 +26,8 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'medication', views.MedicationViewSet, base_name="medication")
 router.register(r'warnings', views.WarningsViewSet, base_name="warn_analog")
+router.register(r'profile', views.ProfileViewSet, base_name="profile")
+router.register(r'search', views.SearchEngine, base_name="search")
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),

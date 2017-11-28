@@ -15,13 +15,13 @@ class RegistrationPermission(permissions.BasePermission):
         if request.method == 'POST':
             return True
 
-        return True
+        return False
 
 
 class GetAuthPermission(permissions.BasePermission):
     """
     Permission:
-    For registration method for unauth users
+    For GET queries with auth permission
     """
     message = 'No auth permission'
 
