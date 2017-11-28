@@ -26,7 +26,7 @@ class GetAuthPermission(permissions.BasePermission):
     message = 'No auth permission'
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and request.method == 'GET':
             return True
 
         return False
