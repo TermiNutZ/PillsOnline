@@ -31,11 +31,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class MedicationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for medication
+    """
     # queryset = Medication.objects.all().filter(title__startswith='ГЕКСОРАЛ')
     queryset = Medication.objects.all()
     serializer_class = MedicationSerializer
 
     def get_queryset(self):
+        """
+        get all medications
+        """
         return Medication.objects.all()
         # if self.request.query_params['q_type'] == 'all_drugs':
         #     return Medication.objects.all()
@@ -46,6 +52,11 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def add_to_user(self, request, pk=None):
+        """
+        add given medication to user list
+        :param pk: id of medication
+        :return: response
+        """
         medication = Medication.objects.get(id=pk)
         user = User.objects.get(id=self.request.user.id)
         profile = user.profile
@@ -58,6 +69,11 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def delete_from_user(self, request, pk=None):
+        """
+        delete given medication from user list
+        :param pk: id of medication
+        :return: response
+        """
         user = User.objects.get(id=self.request.user.id)
         profile = user.profile
         medication = profile.medications.get(id=pk)
@@ -70,6 +86,10 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def analogues(self, request, pk=None):
+        """
+        :param pk: id of medication
+        :return: list of analogues
+        """
         analogues = Medication.objects.get(id=pk).analogues
         serializer = self.get_serializer(analogues, many=True)
 
@@ -77,6 +97,9 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'], permission_classes=[IsAuthenticated])
     def my(self, request):
+        """
+        :return: list of medications of current user
+        """
         user = User.objects.get(id=request.user.id)
         profile = user.profile
         medications = profile.medications.all()
@@ -84,10 +107,12 @@ class MedicationViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-
-
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def is_contra(self, request, pk=None):
+        """
+        :param pk: id of medication
+        :return: is there is possible contraindication for user
+        """
         medication = Medication.objects.get(id=pk)
         user = User.objects.get(id=request.user.id)
         profile = user.profile
@@ -100,11 +125,19 @@ class WarningsViewSet(viewsets.ModelViewSet):
     serializer_class = WarningsAnaloguesSerializer
 
     def get_queryset(self):
+        """
+        return list of warnings for medication
+        """
         queryset = Medication.objects.all().filter(id=self.request.query_params['id'])
         return queryset
 
+
 class ProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for retrieval and modification of user profile info
+    """
     serializer_class = UserProfileSerializer
+
     @list_route(methods=['get'], permission_classes=[GetAuthPermission])
     def get(self, request):
         user = User.objects.get(id=request.user.id)
@@ -122,15 +155,18 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile.birthday = request.data['birthday']
         profile.save()
         return Response({"message": "Profile is edited"},
-            status=status.HTTP_200_OK)
+                        status=status.HTTP_200_OK)
+
 
 class SearchEngine(viewsets.ModelViewSet):
+    """
+    API endpoint for search of medication
+    """
     permission_classes = (GetAuthPermission,)
     serializer_class = MedicationIdSerializer
 
     file_ = os.path.join(PROJECT_ROOT, '../static/word2vec/w2vmodel.w2v')
     w2v_model = Word2Vec.load(file_)
-
 
     def get_queryset(self):
 
@@ -150,8 +186,8 @@ class SearchEngine(viewsets.ModelViewSet):
 
         print("QUERY:", query)
 
-        body_vector = SearchVector('title','indication', 'pharm_action',config='russian')
-        term_query = SearchQuery(query,config='russian') #& SearchQuery('орви')
-        #res = Medication.objects.annotate(search=SearchVector('indication', 'contra')).filter(search='не')
+        body_vector = SearchVector('title', 'indication', 'pharm_action', config='russian')
+        term_query = SearchQuery(query, config='russian')  # & SearchQuery('орви')
+        # res = Medication.objects.annotate(search=SearchVector('indication', 'contra')).filter(search='не')
         queryset = Medication.objects.annotate(rank=SearchRank(body_vector, term_query)).order_by('-rank')
         return queryset[:10]

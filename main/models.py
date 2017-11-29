@@ -9,6 +9,9 @@ from main.util import query_document_similarity
 
 
 class Medication(models.Model):
+    """
+    stores all info about medication
+    """
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200, blank=False, null=False, unique=True)
     pharm_action = models.TextField(null=True)
@@ -35,7 +38,13 @@ class Medication(models.Model):
     warn_kidney = models.IntegerField(null=True)
     warn_liver = models.IntegerField(null=True)
 
+
     def check_contradiction(self, profile_disease):
+        """
+        Check contraindication between user and drug
+        :param profile_disease: diseases of user
+        :return: True if there could be contraindication
+        """
         if profile_disease == "" or self.contra == "" \
                 or profile_disease is None or self.contra is None:
             return False
@@ -44,6 +53,9 @@ class Medication(models.Model):
 
 
 class Profile(models.Model):
+    """
+    additional info about user
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birthday = models.DateField(null=True)
     weight = models.FloatField(null=True)
